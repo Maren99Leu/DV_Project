@@ -9,7 +9,7 @@ import dash_core_components as dcc
 import dash
 
 
-df = pd.read_csv('D:/Daten/Maren/NOVA/Data Visualization/Practical/Lab4/emission_full.csv')
+df = pd.read_csv('emission_full.csv')
 
 fig2=go.Figure(data=go.Choropleth(locations=['Portugal'], z=[100], showscale=False, locationmode='country names'))
 fig_bar = go.Figure(data=go.Bar)
