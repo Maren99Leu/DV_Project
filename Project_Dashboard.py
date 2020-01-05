@@ -74,9 +74,10 @@ app.layout = html.Div([
     ], id='year_slider'),
 
     html.Div([
-        dcc.Graph(id='bar_plot', figure=fig)
+        dcc.Graph(id='bar_plot', figure=fig2)
     ])
 ])
+
 """
 
 #fig.update_layout(height=100, width=800, title_text="World Emissions")
