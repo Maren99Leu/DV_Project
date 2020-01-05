@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 ######################################################Data##############################################################
 
-df = pd.read_csv('emission_full.csv')
+df = pd.read_csv('data/emission_full.csv')
 
 gas_names = ['CO2_emissions', 'GHG_emissions', 'CH4_emissions','N2O_emissions', 'F_Gas_emissions']
 
