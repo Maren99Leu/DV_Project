@@ -28,6 +28,7 @@ sector_options = [dict(label=place.replace('_', ' '), value=place) for place in 
 
 ##################################################APP###############################################################
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+ex_style = ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -46,25 +47,6 @@ app.layout = html.Div([
                 id='country_drop',
                 options=country_options,
                 value=['Portugal'],
-                multi=True
-            ),
-
-            html.Br(),
-
-            html.Label('Gas Choice'),
-            dcc.Dropdown(
-                id='gas_option',
-                options=gas_options,
-                value='CO2_emissions',
-            ),
-
-            html.Br(),
-
-            html.Label('Sector Choice'),
-            dcc.Dropdown(
-                id='sector_options',
-                options=sector_options,
-                value=['energy_emissions', 'waste_emissions'],
                 multi=True
             ),
 
@@ -103,11 +85,11 @@ app.layout = html.Div([
 
             html.Div([
 
-                html.Div([html.Label(id='gas_1')], className='mini pretty'),
-                html.Div([html.Label(id='gas_2')], className='mini pretty'),
-                html.Div([html.Label(id='gas_3')], className='mini pretty'),
-                html.Div([html.Label(id='gas_4')], className='mini pretty'),
-                html.Div([html.Label(id='gas_5')], className='mini pretty'),
+                html.Div([html.Label(id='gas_1')], className='mini card pretty'),
+                html.Div([html.Label(id='gas_2')], className='mini card pretty'),
+                html.Div([html.Label(id='gas_3')], className='mini card pretty'),
+                html.Div([html.Label(id='gas_4')], className='mini card pretty'),
+                html.Div([html.Label(id='gas_5')], className='mini card pretty'),
 
             ], className='5 containers row'),
 
@@ -123,10 +105,28 @@ app.layout = html.Div([
 
     html.Div([
 
-        html.Div([dcc.Graph(id='time_graph')], className='column3 pretty'),
+        html.Div([
+            html.Label('Gas Choice'),
+                dcc.Dropdown(
+                    id='gas_option',
+                    options=gas_options,
+                    value='CO2_emissions',
+                ),
+            html.Br(),
+            dcc.Graph(id='bar_cont')], className='column3 pretty'),
 
-        html.Div([dcc.Graph(id='aggregate_graph')], className='column3 pretty')
+        html.Div([
+            html.Label('Sector Choice'),
+            dcc.Dropdown(
+                id='sector_options',
+                options=sector_options,
+                value=['energy_emissions', 'waste_emissions'],
+                multi=True
+            ),
+        dcc.Graph(id='aggregate_graph')], className='column3 pretty')
 
+        #id='aggregate_graph'
+        #id='bar_cont'
     ], className='row')
 
 ])
@@ -136,8 +136,9 @@ app.layout = html.Div([
     [
         Output("bar_graph", "figure"),
         Output("choropleth", "figure"),
-        Output("aggregate_graph", "figure"),
-        Output("time_graph", "figure")
+        Output("bar_cont", "figure"),
+        Output("aggregate_graph", "figure")
+
     ],
     [
         Input("year_slider", "value"),
@@ -151,6 +152,9 @@ app.layout = html.Div([
 def plots(year, countries, gas, scale, projection, sector):
 
     ############################################First Bar Plot##########################################################
+    ############## Time-Series Plot ##################
+    # Create figure
+    ############################################First Bar Plot##########################################################
     data_bar = []
     for country in countries:
         df_bar = df.loc[(df['country_name'] == country)]
@@ -158,7 +162,45 @@ def plots(year, countries, gas, scale, projection, sector):
         x_bar = df_bar['year']
         y_bar = df_bar[gas]
 
-        data_bar.append(dict(type='bar', x=x_bar, y=y_bar, name=country))
+        data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
+
+    layout_bar = dict(title=dict(text='Emissions from 1990 until 2015'),
+                      xaxis=go.layout.XAxis(
+                          rangeselector=dict(
+                              buttons=list([
+                                  dict(count=1,
+                                       label="YTD",
+                                       step="year",
+                                       stepmode="todate"),
+                                  dict(count=5,
+                                       label="5y",
+                                       step="year",
+                                       stepmode="backward"),
+                                  dict(count=10,
+                                       label="10y",
+                                       step="year",
+                                       stepmode="backward"),
+                                  dict(step="all")
+                              ])
+                          ),
+                          rangeslider=dict(
+                              visible=True
+
+                          ),
+                          type="date"
+                      ),
+                      yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                      paper_bgcolor='#f9f9f9'
+                      )
+
+    """data_bar = []
+    for country in countries:
+        df_bar = df.loc[(df['country_name'] == country)]
+
+        x_bar = df_bar['year']
+        y_bar = df_bar[gas]
+
+        data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
     layout_bar = dict(title=dict(text='Emissions from 1990 until 2015'),
                       xaxis=go.layout.XAxis(
@@ -189,7 +231,7 @@ def plots(year, countries, gas, scale, projection, sector):
                   paper_bgcolor='#f9f9f9'
                   )
 
-
+    """
 
     #############################################Second Choropleth######################################################
 
@@ -245,61 +287,33 @@ def plots(year, countries, gas, scale, projection, sector):
                      paper_bgcolor='#f9f9f9'
                      )
 
-    ############## Time-Series Plot ##################
-    # Create figure
-    fig = go.Figure()
-    data_bar = []
-    for country in countries:
-        df_bar = df.loc[(df['country_name'] == country)]
+    ############## Bar Continents Plot ##################
+    ## CONTINENT BAR PLOT ##
 
-        x_bar = df_bar['year']
-        y_bar = df_bar[gas]
+    df_grouped = df.groupby(['continent', 'year'])[
+        'CO2_emissions', 'GHG_emissions', 'CH4_emissions','N2O_emissions', 'F_Gas_emissions'].sum().reset_index()
 
-        data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
+    df_grouped = df_grouped[df_grouped['year'] == year]
 
-    data_time = fig.add_trace(
-                    go.Scatter(x=list(x_bar), y=list(y_bar)))
+    df__ = df[(df['year'] == year) & (df['country_name'] == country)].reset_index()
 
-    # Set title
-    fig.update_layout(
-        title_text="Time series 'Emissions' from 1990 until 2015 with range slider and selectors"
-    )
+    continents = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'Seven seas (open ocean)', 'South America',
+                  'World']
 
+    bar_cont = go.Figure(data=[
+        go.Bar(name=str(gas), x=continents, y=df_grouped[gas]),
+        go.Bar(name=df__['country_name'][0] + ' ' + str(gas), x=continents, y=float(df__[gas].values) * np.ones(8))])
 
-    # Add range slider
-    layout_time = fig.update_layout(
-                xaxis=go.layout.XAxis(
-                    rangeselector=dict(
-                        buttons=list([
-                            dict(count=1,
-                                 label="YTD",
-                                 step="year",
-                                 stepmode="todate"),
-                            dict(count=5,
-                                 label="5y",
-                                 step="year",
-                                 stepmode="backward"),
-                            dict(count=10,
-                                 label="10y",
-                                 step="year",
-                                 stepmode="backward"),
-                            dict(step="all")
-                        ])
-                    ),
-                    rangeslider=dict(
-                        visible=True
+    bar_cont.update_layout(barmode='group')
 
-                   ),
-                    type="date"
-                ),
-                yaxis= dict(title='Emissions'),
-                      paper_bgcolor='#f9f9f9'
-    )
+    return go.Figure(data=data_bar, layout=layout_bar),\
+           map, \
+           bar_cont,\
+           go.Figure(data=data_agg, layout=layout_agg)
+    #go.Figure(data=data_time, layout=layout_time), \
 
-    return go.Figure(data=data_bar, layout=layout_bar), \
-           go.Figure(data=data_choropleth, layout=layout_choropleth),\
-           go.Figure(data=data_agg, layout=layout_agg),\
-            go.Figure(data=data_time, layout=layout_time)
+            #go.Figure(data=data_choropleth, layout=layout_choropleth),\
+            #bar_cont
 
 
 
