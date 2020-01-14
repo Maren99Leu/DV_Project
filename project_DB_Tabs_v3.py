@@ -36,59 +36,47 @@ app.layout = html.Div([
                 html.H1('World Emissions - Data Visualization Project'),
                 html.H4('by Catarina, Mafalda and Maren')
             ], className='Title'),
-
+    html.Div([
+        html.Label('Choose a year:'),
+        dcc.Slider(
+            id='year_slider',
+            min=df['year'].min(),
+            max=df['year'].max(),
+            marks={str(i): '{}'.format(str(i)) for i in df['year'].unique()},
+            value=df['year'].min(),
+            step=None
+        ),
+        html.Br(),
+    ]),
     html.Div([
         html.Div([
-            html.Label('Country Choice'),
+            html.Label('Choose a country:'),
             dcc.Dropdown(
                 id='country_drop',
                 options=country_options,
                 value=['Portugal'],
                 multi=True
-            ),
-            html.Br(),
-
-            html.Label('Year Slider'),
-                            dcc.Slider(
-                                id='year_slider',
-                                min=df['year'].min(),
-                                max=df['year'].max(),
-                                marks={str(i): '{}'.format(str(i)) for i in [1990, 1995, 2000, 2005, 2010, 2012]},
-                                value=df['year'].min(),
-                                step=None
-                        ),
-
-            html.Br(),
-
-            #html.Label('Linear Log'),
-            #dcc.RadioItems(
-                #id='lin_log',
-                #options=[dict(label='Linear', value=0), dict(label='log', value=1)],
-                #value=0
-            #),
-            
-            #html.Br(),
-
-            html.Label('Projection'),
+            )
+        ], className='column'),
+        html.Div([
+            html.Label('Choose a projection:'),
             dcc.RadioItems(
                 id='projection',
                 options=[dict(label='Equirectangular', value=0), dict(label='Orthographic', value=1)],
-                value=0
-            ),
-
-            html.Br(),
-
-            html.Label('Gas Choice'),
-                dcc.Dropdown(
-                    id='gas_option',
-                    options=gas_options,
-                    value='CO2_emissions',
-                ),
-
-            html.Br(),
-
-        ], className='column1 pretty'),
-
+                value=0,
+                labelStyle={'display': 'inline-block'}
+            )
+        ], className='column'),
+        html.Div([
+            html.Label('Choose a gas choice:'),
+            dcc.Dropdown(
+                id='gas_option',
+                options=gas_options,
+                value='CO2_emissions',
+            )
+        ], className='column')
+    ], className='row'),
+    html.Div([
         html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
