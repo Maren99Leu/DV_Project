@@ -92,10 +92,10 @@ app.layout = html.Div([
         html.Div([
             html.Div([dcc.Tabs([
                         dcc.Tab(label='World Map', children=[
-                            html.Label('World emissions per capita (kt of CO2)'),
+                            html.H5('World emissions per capita (kt of CO2)'),
                             dcc.Graph(id='choropleth'),
                             html.Br(),
-                            html.Label('GDP per capita (USD)'),
+                            html.H5('GDP per capita (USD)'),
                             dcc.Graph(id='choropleth2')
                         ]),
                         dcc.Tab(label='Time Series Data', children=[
