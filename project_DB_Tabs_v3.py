@@ -55,7 +55,7 @@ app.layout = html.Div([
                                 max=df['year'].max(),
                                 marks={str(i): '{}'.format(str(i)) for i in [1990, 1995, 2000, 2005, 2010, 2012]},
                                 value=df['year'].min(),
-                                step=1
+                                step=None
                         ),
 
             html.Br(),
@@ -91,13 +91,18 @@ app.layout = html.Div([
 
         html.Div([
             html.Div([dcc.Tabs([
-                        dcc.Tab(label='World Map', children=[
-                            html.H5('World emissions per capita (kt of CO2)'),
-                            dcc.Graph(id='choropleth'),
-                            html.Br(),
-                            html.H5('GDP per capita (USD)'),
-                            dcc.Graph(id='choropleth2')
-                        ]),
+                            dcc.Tab(label='World Map', children=[
+                                html.Div([
+                                    html.Div([
+                                        html.H5('World emissions per capita (kt of CO2)'),
+                                        dcc.Graph(id='choropleth')
+                                    ], className='columnMap1'),
+                                    html.Div([
+                                        html.H5('GDP per capita (USD)'),
+                                        dcc.Graph(id='choropleth2')
+                                    ], className='columnMap2')
+                                ], className='row'),
+                            ]),
                         dcc.Tab(label='Time Series Data', children=[
                             html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
                             dcc.Graph(id='bar_graph'),

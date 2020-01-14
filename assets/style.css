@@ -3,9 +3,14 @@ body {
   margin: 0.5%;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h6 {
   text-align: center;
   background-color: #f2f2f2;
+  margin: 0.25%;
+}
+
+h5 {
+  text-align: center;
   margin: 0.25%;
 }
 
@@ -55,6 +60,7 @@ img {
 
 .column1 {
   flex: 20%;
+  height: 350px
 }
 
 .column2 {
@@ -65,6 +71,13 @@ img {
   flex: 50%;
 }
 
+.columnMap1 {
+    flex:20%;
+}
+
+.columnMap2 {
+    flex:20%;
+}
 .mini {
   flex: 15%;
   margin: 5%;
