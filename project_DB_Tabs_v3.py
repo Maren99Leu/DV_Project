@@ -270,7 +270,7 @@ def plots(year, countries, gas, projection):
         df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
     else:
         df_ = np.log(df[(df['Country Name'] == country) & (df['year'] == year)])
-    """
+    
     df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
 
     fig2 = go.Figure()
@@ -294,6 +294,25 @@ def plots(year, countries, gas, projection):
         x=[df_.iloc[0]['year']],
         y=[df_.iloc[0]['GHG_emissions']],
         name='GHG Emissions'))
+    """
+
+    fig2 = go.Figure()
+
+    for country in countries:
+        y = []
+        for gas in gas_names:
+            #print(df[gas].loc[(df['Country Name'] == country) & (df['year'] == year)])
+            y.append(df[gas].loc[(df['Country Name']==country) & (df['year']==year)].values[0])
+
+        fig2.add_trace(go.Bar(
+            x=gas_names,
+            y=y,
+            name=country,
+        ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig2.update_layout(barmode='group', xaxis_tickangle=-45)
+    #fig.show()
 
     return go.Figure(data=data_bar, layout=layout_bar),\
            go.Figure(data=data_bar2, layout=layout_bar2),\
