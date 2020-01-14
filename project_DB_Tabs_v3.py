@@ -103,16 +103,16 @@ app.layout = html.Div([
                                     ], className='columnMap2')
                                 ], className='row'),
                             ]),
-                        dcc.Tab(label='Time Series Data', children=[
-                            html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
-                            dcc.Graph(id='bar_graph'),
-                            html.H5('GDP per capita (US$) from 1990 until 2012'),
-                            dcc.Graph(id='bar_graph2')
-                        ]),
-                        dcc.Tab(label='Bar Plot Emissions', children=[
-                            html.H5('Emissions per capita (kt of CO2)'),
-                            dcc.Graph(id='bar_plot'),
-                        ]),
+                            dcc.Tab(label='Time Series Data', children=[
+                                html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
+                                dcc.Graph(id='bar_graph'),
+                                html.H5('GDP per capita (US$) from 1990 until 2012'),
+                                dcc.Graph(id='bar_graph2')
+                            ]),
+                            dcc.Tab(label='Bar Plot Emissions', children=[
+                                html.H5('Emissions per capita (kt of CO2)'),
+                                dcc.Graph(id='bar_plot'),
+                            ]),
                     ])
                 ]),
             ], className='column2 pretty')
@@ -140,16 +140,16 @@ app.layout = html.Div([
 
 def plots(year, countries, gas, projection):
 ############################# Time Series Plot ##########################################################
-    data_bar = []
+    time_scatter = []
     for country in countries:
         df_bar = df.loc[(df['Country Name'] == country)]
 
         x_bar = df_bar['year']
         y_bar = df_bar[gas]
 
-        data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
+        time_scatter.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar = dict(#title=dict(text='Emissions per capita (kt of CO2) from 1990 until 2015'),
+    layout_scatter = dict(#title=dict(text='Emissions per capita (kt of CO2) from 1990 until 2015'),
                       xaxis=go.layout.XAxis(
                           rangeselector=dict(
                               buttons=list([
@@ -178,16 +178,16 @@ def plots(year, countries, gas, projection):
                       paper_bgcolor='#f9f9f9'
                       )
 
-    data_bar2 = []
+    time_scatter2 = []
     for country in countries:
         df_bar = df.loc[(df['Country Name'] == country)]
 
         x_bar = df_bar['year']
         y_bar = df_bar['GDP']
 
-        data_bar2.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
+        time_scatter2.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar2 = dict(#title=dict(text='GDP per capita (US$) from 1990 until 2015'),
+    layout_scatter2 = dict(#title=dict(text='GDP per capita (US$) from 1990 until 2015'),
                        xaxis=go.layout.XAxis(
                            rangeselector=dict(
                                buttons=list([
@@ -330,8 +330,8 @@ def plots(year, countries, gas, projection):
     fig2.update_layout(barmode='group', xaxis_tickangle=-45)
     #fig.show()
 
-    return go.Figure(data=data_bar, layout=layout_bar),\
-           go.Figure(data=data_bar2, layout=layout_bar2),\
+    return go.Figure(data=time_scatter, layout=layout_scatter),\
+           go.Figure(data=time_scatter2, layout=layout_scatter2),\
            map,\
            map2,\
            fig2
