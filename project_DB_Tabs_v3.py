@@ -78,14 +78,6 @@ app.layout = html.Div([
 
             html.Br(),
 
-            html.Label('Sector Choice'),
-                        dcc.Dropdown(
-                            id='sector_options',
-                            options=sector_options,
-                            value=['energy_emissions', 'waste_emissions'],
-                            multi=True
-                        ),
-
             html.Label('Gas Choice'),
                 dcc.Dropdown(
                     id='gas_option',
@@ -121,7 +113,6 @@ app.layout = html.Div([
         Output("bar_graph", "figure"),
         Output("choropleth", "figure"),
         Output("bar_cont", "figure")
-        #Output("aggregate_graph", "figure")
 
     ],
     [
@@ -130,11 +121,10 @@ app.layout = html.Div([
         Input("gas_option", "value"),
         Input("lin_log", "value"),
         Input("projection", "value"),
-        Input("sector_options", "value")
     ]
 )
 
-def plots(year, countries, gas, scale, projection, sector):
+def plots(year, countries, gas, scale, projection):
 
     ############################################First Bar Plot##########################################################
     ############## Time-Series Plot ##################
@@ -209,28 +199,6 @@ def plots(year, countries, gas, scale, projection, sector):
 
     map = go.Figure(data=data_choropleth, layout=layout_choropleth)
 
-    ############################################Third Scatter Plot######################################################
-
-    df_loc = df.loc[df['country_name'].isin(countries)].groupby('year').sum().reset_index()
-
-    data_agg = []
-
-    for place in sector:
-        data_agg.append(dict(type='scatter',
-                         x=df_loc['year'].unique(),
-                         y=df_loc[place],
-                         name=place.replace('_', ' '),
-                         mode='markers'
-                         )
-                    )
-
-    layout_agg = dict(title=dict(text='Aggregate CO2 Emissions by Sector'),
-                     yaxis=dict(title=['CO2 Emissions', 'CO2 Emissions (log scaled)'][scale],
-                                type=['linear', 'log'][scale]),
-                     xaxis=dict(title='Year'),
-                     paper_bgcolor='#f9f9f9'
-                     )
-
     ############## Bar Continents Plot ##################
     ## CONTINENT BAR PLOT ##
 
@@ -253,7 +221,6 @@ def plots(year, countries, gas, scale, projection, sector):
     return go.Figure(data=data_bar, layout=layout_bar),\
            map,\
            bar_cont
-           #go.Figure(data=data_agg, layout=layout_agg)
     #go.Figure(data=data_time, layout=layout_time), \
 
             #go.Figure(data=data_choropleth, layout=layout_choropleth),\
