@@ -10,7 +10,7 @@ import plotly.graph_objs as go
 
 df = pd.read_csv('data.csv', sep = ';')
 
-gas_names = ['CO2_emissions', 'CH4_emissions','N2O_emissions', 'GHG_emissions', 'GDP']
+gas_names = ['CO2_emissions', 'CH4_emissions','N2O_emissions', 'GHG_emissions']
 
 places= ['energy_emissions', 'industry_emissions',
        'agriculture_emissions', 'waste_emissions',
@@ -21,6 +21,8 @@ places= ['energy_emissions', 'industry_emissions',
 ######################################################Interactive Components############################################
 
 country_options = [dict(label=country, value=country) for country in df['Country Name'].unique()]
+
+year = [dict(label = year, value = year) for year in df['year'].unique()]
 
 gas_options = [dict(label=gas.replace('_', ' '), value=gas) for gas in gas_names]
 
@@ -95,8 +97,8 @@ app.layout = html.Div([
                         dcc.Tab(label='Time Series Data', children=[
                             dcc.Graph(id='bar_graph')
                         ]),
-                        dcc.Tab(label='Continental Bar Plot', children=[
-                            dcc.Graph(id='bar_cont')
+                        dcc.Tab(label='Bar Plot Emissions', children=[
+                            dcc.Graph(id='bar_plot')
                         ]),
                     ])
                 ]),
@@ -110,7 +112,7 @@ app.layout = html.Div([
     [
         Output("bar_graph", "figure"),
         Output("choropleth", "figure"),
-        #Output("bar_cont", "figure")
+        Output("bar_plot", "figure")
 
     ],
     [
@@ -123,11 +125,7 @@ app.layout = html.Div([
 )
 
 def plots(year, countries, gas, scale, projection):
-
-    ############################################First Bar Plot##########################################################
-    ############## Time-Series Plot ##################
-    # Create figure
-    ############################################First Bar Plot##########################################################
+############################# Time Series Plot ##########################################################
     data_bar = []
     for country in countries:
         df_bar = df.loc[(df['Country Name'] == country)]
@@ -165,7 +163,7 @@ def plots(year, countries, gas, scale, projection):
                       yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                       paper_bgcolor='#f9f9f9'
                       )
-    #############################################Second Choropleth######################################################
+    ############################################# World Map #####################################################
 
     df_map = df.loc[df['year'] == year]
 
@@ -197,13 +195,35 @@ def plots(year, countries, gas, scale, projection):
 
     map = go.Figure(data=data_choropleth, layout=layout_choropleth)
 
+
+    #### Bar plot ####
+    df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
+
+    fig2 = go.Figure()
+
+    fig2.add_trace(go.Bar(
+        x=[df_.iloc[0]['year']],
+        y=[df_.iloc[0]['CH4_emissions']],
+        name='CH4 Emissions'))
+
+    fig2.add_trace(go.Bar(
+        x=[df_.iloc[0]['year']],
+        y=[df_.iloc[0]['N2O_emissions']],
+        name='N20 Emissions'))
+
+    fig2.add_trace(go.Bar(
+        x=[df_.iloc[0]['year']],
+        y=[df_.iloc[0]['CO2_emissions']],
+        name='CO2 Emissions'))
+
+    fig2.add_trace(go.Bar(
+        x=[df_.iloc[0]['year']],
+        y=[df_.iloc[0]['GHG_emissions']],
+        name='GHG Emissions'))
+
     return go.Figure(data=data_bar, layout=layout_bar),\
            map,\
-           #bar_cont
-    #go.Figure(data=data_time, layout=layout_time), \
-
-            #go.Figure(data=data_choropleth, layout=layout_choropleth),\
-            #
+           fig2
 
 
 if __name__ == '__main__':
