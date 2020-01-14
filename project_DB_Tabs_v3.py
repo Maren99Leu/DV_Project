@@ -92,14 +92,28 @@ app.layout = html.Div([
                                 ], className='row'),
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
-                                html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
-                                dcc.Graph(id='bar_graph'),
-                                html.H5('GDP per capita (US$) from 1990 until 2012'),
-                                dcc.Graph(id='bar_graph2')
+                                html.Div([
+                                    html.Div([
+                                        html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
+                                        dcc.Graph(id='bar_graph'),
+                                    ], className='columnMap1'),
+                                    html.Div([
+                                        html.H5('GDP per capita (US$) from 1990 until 2012'),
+                                        dcc.Graph(id='bar_graph2')
+                                    ], className='columnMap2')
+                                ], className='row'),
                             ]),
                             dcc.Tab(label='Bar Plot Emissions', children=[
-                                html.H5('Emissions per capita (kt of CO2)'),
-                                dcc.Graph(id='bar_plot'),
+                                html.Div([
+                                    html.Div([
+                                    ], className='columnmi'),
+                                    html.Div([
+                                        html.H5('Emissions per capita (kt of CO2)'),
+                                        dcc.Graph(id='bar_plot'),
+                                    ], className='columnMap1'),
+                                    html.Div([
+                                    ], className='columnmi')
+                                ], className='row'),
                             ]),
                     ])
                 ]),
