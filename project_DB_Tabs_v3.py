@@ -138,7 +138,7 @@ def plots(year, countries, gas, projection):
 
         data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar = dict(title=dict(text='Emissions from 1990 until 2015'),
+    layout_bar = dict(title=dict(text='Emissions per capita (kt of CO2) from 1990 until 2015'),
                       xaxis=go.layout.XAxis(
                           rangeselector=dict(
                               buttons=list([
@@ -176,7 +176,7 @@ def plots(year, countries, gas, projection):
 
         data_bar2.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar2 = dict(title=dict(text='GDP from 1990 until 2015'),
+    layout_bar2 = dict(title=dict(text='GDP per capita (US$) from 1990 until 2015'),
                        xaxis=go.layout.XAxis(
                            rangeselector=dict(
                                buttons=list([
@@ -223,17 +223,18 @@ def plots(year, countries, gas, projection):
                            reversescale=True,
                            name='')
 
-    layout_choropleth = dict(geo=dict(scope='world',  # default
-                                      projection=dict(type=['equirectangular', 'orthographic'][projection]),
-                                      landcolor='black',
-                                      lakecolor='white',
-                                      showocean=True,
-                                      oceancolor='azure',
-                                      bgcolor='#f9f9f9'),
-
-                             paper_bgcolor='#f9f9f9',
-                             margin=dict(t=0, b=0, l=0, r=0)
-                             )
+    layout_choropleth = dict(
+        title='World emission',
+        geo=dict(scope='world',  # default
+                 projection=dict(type=['equirectangular', 'orthographic'][projection]),
+                 landcolor='black',
+                 lakecolor='white',
+                 showocean=True,
+                 oceancolor='azure',
+                 bgcolor='#f9f9f9'),
+        paper_bgcolor='#f9f9f9',
+        margin=dict(t=0, b=0, l=0, r=0)
+    )
 
     map = go.Figure(data=data_choropleth, layout=layout_choropleth)
 
