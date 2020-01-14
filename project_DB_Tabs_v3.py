@@ -8,9 +8,9 @@ import plotly.graph_objs as go
 
 ######################################################Data##############################################################
 
-df = pd.read_csv('emission_full.csv')
+df = pd.read_csv('data.csv')
 
-gas_names = ['CO2_emissions', 'GHG_emissions', 'CH4_emissions','N2O_emissions', 'F_Gas_emissions']
+gas_names = ['CO2_emissions', 'CH4_emissions','N2O_emissions', 'GHG_emissions', 'GDP']
 
 places= ['energy_emissions', 'industry_emissions',
        'agriculture_emissions', 'waste_emissions',
@@ -23,8 +23,6 @@ places= ['energy_emissions', 'industry_emissions',
 country_options = [dict(label=country, value=country) for country in df['country_name'].unique()]
 
 gas_options = [dict(label=gas.replace('_', ' '), value=gas) for gas in gas_names]
-
-sector_options = [dict(label=place.replace('_', ' '), value=place) for place in places]
 
 ##################################################APP###############################################################
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -112,7 +110,7 @@ app.layout = html.Div([
     [
         Output("bar_graph", "figure"),
         Output("choropleth", "figure"),
-        Output("bar_cont", "figure")
+        #Output("bar_cont", "figure")
 
     ],
     [
@@ -199,28 +197,9 @@ def plots(year, countries, gas, scale, projection):
 
     map = go.Figure(data=data_choropleth, layout=layout_choropleth)
 
-    ############## Bar Continents Plot ##################
-    ## CONTINENT BAR PLOT ##
-
-    df_grouped = df.groupby(['continent', 'year'])[
-        'CO2_emissions', 'GHG_emissions', 'CH4_emissions', 'N2O_emissions', 'F_Gas_emissions'].sum().reset_index()
-
-    df_grouped = df_grouped[df_grouped['year'] == year]
-
-    df__ = df[(df['year'] == year) & (df['country_name'] == country)].reset_index()
-
-    continents = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'Seven seas (open ocean)', 'South America',
-                  'World']
-
-    bar_cont = go.Figure(data=[
-        go.Bar(name=str(gas), x=continents, y=df_grouped[gas]),
-        go.Bar(name=df__['country_name'][0] + ' ' + str(gas), x=continents, y=float(df__[gas].values) * np.ones(8))])
-
-    bar_cont.update_layout(barmode='group')
-
     return go.Figure(data=data_bar, layout=layout_bar),\
            map,\
-           bar_cont
+           #bar_cont
     #go.Figure(data=data_time, layout=layout_time), \
 
             #go.Figure(data=data_choropleth, layout=layout_choropleth),\
