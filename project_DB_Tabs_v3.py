@@ -92,13 +92,15 @@ app.layout = html.Div([
         html.Div([
             html.Div([dcc.Tabs([
                         dcc.Tab(label='World Map', children=[
-                            dcc.Graph(id='choropleth')
+                            dcc.Graph(id='choropleth'),
+                            dcc.Graph(id='choropleth2')
                         ]),
                         dcc.Tab(label='Time Series Data', children=[
-                            dcc.Graph(id='bar_graph')
+                            dcc.Graph(id='bar_graph'),
+                            dcc.Graph(id='bar_graph2')
                         ]),
                         dcc.Tab(label='Bar Plot Emissions', children=[
-                            dcc.Graph(id='bar_plot')
+                            dcc.Graph(id='bar_plot'),
                         ]),
                     ])
                 ]),
@@ -111,9 +113,10 @@ app.layout = html.Div([
 @app.callback(
     [
         Output("bar_graph", "figure"),
+        Output("bar_graph2", "figure"),
         Output("choropleth", "figure"),
+        Output("choropleth2", "figure"),
         Output("bar_plot", "figure")
-
     ],
     [
         Input("year_slider", "value"),
@@ -163,6 +166,44 @@ def plots(year, countries, gas, scale, projection):
                       yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                       paper_bgcolor='#f9f9f9'
                       )
+
+    data_bar2 = []
+    for country in countries:
+        df_bar = df.loc[(df['Country Name'] == country)]
+
+        x_bar = df_bar['year']
+        y_bar = df_bar['GDP']
+
+        data_bar2.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
+
+    layout_bar2 = dict(title=dict(text='GDP from 1990 until 2015'),
+                       xaxis=go.layout.XAxis(
+                           rangeselector=dict(
+                               buttons=list([
+                                   dict(count=1,
+                                        label="YTD",
+                                        step="year",
+                                        stepmode="todate"),
+                                   dict(count=5,
+                                        label="5y",
+                                        step="year",
+                                        stepmode="backward"),
+                                   dict(count=10,
+                                        label="10y",
+                                        step="year",
+                                        stepmode="backward"),
+                                   dict(step="all")
+                               ])
+                           ),
+                           rangeslider=dict(
+                               visible=True
+
+                           ),
+                           type="date"
+                       ),
+                       yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                       paper_bgcolor='#f9f9f9'
+                       )
     ############################################# World Map #####################################################
 
     df_map = df.loc[df['year'] == year]
@@ -178,6 +219,7 @@ def plots(year, countries, gas, scale, projection):
                            z=z,
                            text=df_map['Country Name'],
                            colorscale='RdYlGn',
+                           #colorbar_title='kt of CO2',
                            reversescale=True,
                            name='')
 
@@ -195,6 +237,31 @@ def plots(year, countries, gas, scale, projection):
 
     map = go.Figure(data=data_choropleth, layout=layout_choropleth)
 
+    z2 = np.log(df_map['GDP'])
+
+    data_choropleth2 = dict(type='choropleth',
+                            locations=df_map['Country Name'],
+                            locationmode='country names',
+                            z=z2,
+                            text=df_map['Country Name'],
+                            colorscale='RdYlGn',
+                            #colorbar_title='USD',
+                            reversescale=True,
+                            name='')
+
+    layout_choropleth2 = dict(geo=dict(scope='world',  # default
+                                       projection=dict(type=['equirectangular', 'orthographic'][projection]),
+                                       landcolor='black',
+                                       lakecolor='white',
+                                       showocean=True,
+                                       oceancolor='azure',
+                                       bgcolor='#f9f9f9'),
+
+                              paper_bgcolor='#f9f9f9',
+                              margin=dict(t=0, b=0, l=0, r=0)
+                              )
+
+    map2 = go.Figure(data=data_choropleth2, layout=layout_choropleth2)
 
     #### Bar plot ####
     df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
@@ -222,7 +289,9 @@ def plots(year, countries, gas, scale, projection):
         name='GHG Emissions'))
 
     return go.Figure(data=data_bar, layout=layout_bar),\
+           go.Figure(data=data_bar2, layout=layout_bar2),\
            map,\
+           map2,\
            fig2
 
 
