@@ -53,7 +53,7 @@ app.layout = html.Div([
                                 id='year_slider',
                                 min=df['year'].min(),
                                 max=df['year'].max(),
-                                marks={str(i): '{}'.format(str(i)) for i in [1990, 1995, 2000, 2005, 2010, 2014]},
+                                marks={str(i): '{}'.format(str(i)) for i in [1990, 1995, 2000, 2005, 2010, 2012]},
                                 value=df['year'].min(),
                                 step=1
                         ),
@@ -92,7 +92,10 @@ app.layout = html.Div([
         html.Div([
             html.Div([dcc.Tabs([
                         dcc.Tab(label='World Map', children=[
+                            html.Label('World emissions per capita (kt of CO2)'),
                             dcc.Graph(id='choropleth'),
+                            html.Br(),
+                            html.Label('GDP per capita (USD)'),
                             dcc.Graph(id='choropleth2')
                         ]),
                         dcc.Tab(label='Time Series Data', children=[
@@ -223,8 +226,10 @@ def plots(year, countries, gas, projection):
                            reversescale=True,
                            name='')
 
+    #title_choropleth = 'World emissions of ' + gas + ' per capita (kt of CO2) in ' + str(year)
+
     layout_choropleth = dict(
-        title='World emission',
+        #title=title_choropleth,
         geo=dict(scope='world',  # default
                  projection=dict(type=['equirectangular', 'orthographic'][projection]),
                  landcolor='black',
@@ -250,17 +255,20 @@ def plots(year, countries, gas, projection):
                             reversescale=True,
                             name='')
 
-    layout_choropleth2 = dict(geo=dict(scope='world',  # default
-                                       projection=dict(type=['equirectangular', 'orthographic'][projection]),
-                                       landcolor='black',
-                                       lakecolor='white',
-                                       showocean=True,
-                                       oceancolor='azure',
-                                       bgcolor='#f9f9f9'),
+    #title_choropleth2 = 'GDP per capita (USD) in ' + str(year)
 
-                              paper_bgcolor='#f9f9f9',
-                              margin=dict(t=0, b=0, l=0, r=0)
-                              )
+    layout_choropleth2 = dict(
+        #title = title_choropleth2,
+        geo=dict(scope='world',  # default
+                 projection=dict(type=['equirectangular', 'orthographic'][projection]),
+                 landcolor='black',
+                 lakecolor='white',
+                 showocean=True,
+                 oceancolor='azure',
+                 bgcolor='#f9f9f9'),
+        paper_bgcolor='#f9f9f9',
+        margin=dict(t=0, b=0, l=0, r=0)
+    )
 
     map2 = go.Figure(data=data_choropleth2, layout=layout_choropleth2)
 
