@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 
 ######################################################Data##############################################################
 
-df = pd.read_csv('data.csv')
+df = pd.read_csv('data.csv', sep = ';')
 
 gas_names = ['CO2_emissions', 'CH4_emissions','N2O_emissions', 'GHG_emissions', 'GDP']
 
@@ -20,7 +20,7 @@ places= ['energy_emissions', 'industry_emissions',
 
 ######################################################Interactive Components############################################
 
-country_options = [dict(label=country, value=country) for country in df['country_name'].unique()]
+country_options = [dict(label=country, value=country) for country in df['Country Name'].unique()]
 
 gas_options = [dict(label=gas.replace('_', ' '), value=gas) for gas in gas_names]
 
@@ -130,7 +130,7 @@ def plots(year, countries, gas, scale, projection):
     ############################################First Bar Plot##########################################################
     data_bar = []
     for country in countries:
-        df_bar = df.loc[(df['country_name'] == country)]
+        df_bar = df.loc[(df['Country Name'] == country)]
 
         x_bar = df_bar['year']
         y_bar = df_bar[gas]
@@ -172,13 +172,13 @@ def plots(year, countries, gas, scale, projection):
     z = np.log(df_map[gas])
 
     # print(z)
-    # print(df_map['country_name'])
+    # print(df_map['Country Name'])
 
     data_choropleth = dict(type='choropleth',
-                           locations=df_map['country_name'],
+                           locations=df_map['Country Name'],
                            locationmode='country names',
                            z=z,
-                           text=df_map['country_name'],
+                           text=df_map['Country Name'],
                            colorscale='RdYlGn',
                            reversescale=True,
                            name='')
