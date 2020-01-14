@@ -60,14 +60,14 @@ app.layout = html.Div([
 
             html.Br(),
 
-            html.Label('Linear Log'),
-            dcc.RadioItems(
-                id='lin_log',
-                options=[dict(label='Linear', value=0), dict(label='log', value=1)],
-                value=0
-            ),
-
-            html.Br(),
+            #html.Label('Linear Log'),
+            #dcc.RadioItems(
+                #id='lin_log',
+                #options=[dict(label='Linear', value=0), dict(label='log', value=1)],
+                #value=0
+            #),
+            
+            #html.Br(),
 
             html.Label('Projection'),
             dcc.RadioItems(
@@ -122,12 +122,12 @@ app.layout = html.Div([
         Input("year_slider", "value"),
         Input("country_drop", "value"),
         Input("gas_option", "value"),
-        Input("lin_log", "value"),
+        #Input("lin_log", "value"),
         Input("projection", "value"),
     ]
 )
 
-def plots(year, countries, gas, scale, projection):
+def plots(year, countries, gas, projection):
 ############################# Time Series Plot ##########################################################
     data_bar = []
     for country in countries:
@@ -163,7 +163,7 @@ def plots(year, countries, gas, scale, projection):
                           ),
                           type="date"
                       ),
-                      yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                      #yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                       paper_bgcolor='#f9f9f9'
                       )
 
@@ -201,7 +201,7 @@ def plots(year, countries, gas, scale, projection):
                            ),
                            type="date"
                        ),
-                       yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                       #yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                        paper_bgcolor='#f9f9f9'
                        )
     ############################################# World Map #####################################################
@@ -264,6 +264,12 @@ def plots(year, countries, gas, scale, projection):
     map2 = go.Figure(data=data_choropleth2, layout=layout_choropleth2)
 
     #### Bar plot ####
+    """
+    if scale == 'linear':
+        df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
+    else:
+        df_ = np.log(df[(df['Country Name'] == country) & (df['year'] == year)])
+    """
     df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
 
     fig2 = go.Figure()
