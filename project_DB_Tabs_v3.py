@@ -99,10 +99,13 @@ app.layout = html.Div([
                             dcc.Graph(id='choropleth2')
                         ]),
                         dcc.Tab(label='Time Series Data', children=[
+                            html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
                             dcc.Graph(id='bar_graph'),
+                            html.H5('GDP per capita (US$) from 1990 until 2012'),
                             dcc.Graph(id='bar_graph2')
                         ]),
                         dcc.Tab(label='Bar Plot Emissions', children=[
+                            html.H5('Emissions per capita (kt of CO2)'),
                             dcc.Graph(id='bar_plot'),
                         ]),
                     ])
@@ -141,7 +144,7 @@ def plots(year, countries, gas, projection):
 
         data_bar.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar = dict(title=dict(text='Emissions per capita (kt of CO2) from 1990 until 2015'),
+    layout_bar = dict(#title=dict(text='Emissions per capita (kt of CO2) from 1990 until 2015'),
                       xaxis=go.layout.XAxis(
                           rangeselector=dict(
                               buttons=list([
@@ -179,7 +182,7 @@ def plots(year, countries, gas, projection):
 
         data_bar2.append(dict(type='scatter', x=x_bar, y=y_bar, name=country))
 
-    layout_bar2 = dict(title=dict(text='GDP per capita (US$) from 1990 until 2015'),
+    layout_bar2 = dict(#title=dict(text='GDP per capita (US$) from 1990 until 2015'),
                        xaxis=go.layout.XAxis(
                            rangeselector=dict(
                                buttons=list([
