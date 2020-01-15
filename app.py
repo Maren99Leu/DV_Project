@@ -85,6 +85,9 @@ app.layout = html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
                                 html.Div([
+                                    html.H6('Filter by year and choice of gas')
+                                ], className='row'),
+                                html.Div([
                                     html.Div([
                                         html.H5('World emissions per capita (kt of CO2)'),
                                         dcc.Graph(id='choropleth')
@@ -96,6 +99,9 @@ app.layout = html.Div([
                                 ], className='row'),
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
+                                html.Div([
+                                    html.H6('Filter by one or more countries')
+                                ], className='row'),
                                 html.Div([
                                     html.Div([
                                         html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
@@ -109,10 +115,12 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Bar Plot Emissions', children=[
                                 html.Div([
+                                    html.H6('Filter by year and one or more countries')
+                                ], className='row'),
+                                html.Div([
                                     html.Div([
                                     ], className='columnmi'),
                                     html.Div([
-                                        html.H5('Emissions per capita (kt of CO2)'),
                                         dcc.Graph(id='bar_plot'),
                                     ], className='columnBar'),
                                     html.Div([
