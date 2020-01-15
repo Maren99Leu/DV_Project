@@ -101,7 +101,7 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
                                 html.Div([
-                                    html.H6('Filter by: year, countries and scale')
+                                    html.H6('Filter by: Countries and scale')
                                     ], className='row'),
                                 html.Div([
                                     html.Div([
