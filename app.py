@@ -243,9 +243,9 @@ def plots(year, countries, gas, scale, projection):
                            locationmode='country names',
                            z=z,
                            text=df_map['Country Name'],
-                           colorscale='RdYlGn',
+                           colorscale='YlOrRd',
                            #colorbar_title='kt of CO2',
-                           reversescale=True,
+                           #reversescale=True,
                            name='')
 
     #title_choropleth = 'World emissions of ' + gas + ' per capita (kt of CO2) in ' + str(year)
@@ -272,9 +272,9 @@ def plots(year, countries, gas, scale, projection):
                             locationmode='country names',
                             z=z2,
                             text=df_map['Country Name'],
-                            colorscale='RdYlGn',
+                            colorscale='YlOrRd',
                             #colorbar_title='USD',
-                            reversescale=True,
+                            #reversescale=True,
                             name='')
 
     #title_choropleth2 = 'GDP per capita (USD) in ' + str(year)
