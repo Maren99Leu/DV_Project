@@ -85,6 +85,9 @@ app.layout = html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
                                 html.Div([
+                                     html.Div([
+                                        html.H6('Filter by: Year and Gas')
+                                        ], className='row'),
                                     html.Div([
                                         html.H5('World emissions per capita (kt of CO2)'),
                                         dcc.Graph(id='choropleth')
@@ -96,6 +99,9 @@ app.layout = html.Div([
                                 ], className='row'),
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
+                                html.Div([
+                                    html.H6('Filter by: Countries')
+                                    ], className='row'),
                                 html.Div([
                                     html.Div([
                                         html.H5('Emissions per capita (kt of CO2) from 1990 until 2012'),
@@ -109,6 +115,9 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Bar Plot Emissions', children=[
                                 html.Div([
+                                    html.Div([
+                                        html.H6('Filter by: Year and Countries')
+                                        ], className='row'),
                                     html.Div([
                                     ], className='columnmi'),
                                     html.Div([
@@ -235,9 +244,9 @@ def plots(year, countries, gas, scale, projection):
                            locationmode='country names',
                            z=z,
                            text=df_map['Country Name'],
-                           colorscale='RdYlGn',
+                           colorscale='YlOrRd',
                            #colorbar_title='kt of CO2',
-                           reversescale=True,
+                           #reversescale=True,
                            name='')
 
     #title_choropleth = 'World emissions of ' + gas + ' per capita (kt of CO2) in ' + str(year)
@@ -264,9 +273,9 @@ def plots(year, countries, gas, scale, projection):
                             locationmode='country names',
                             z=z2,
                             text=df_map['Country Name'],
-                            colorscale='RdYlGn',
+                            colorscale='YlOrRd',
                             #colorbar_title='USD',
-                            reversescale=True,
+                            #reversescale=True,
                             name='')
 
     #title_choropleth2 = 'GDP per capita (USD) in ' + str(year)
