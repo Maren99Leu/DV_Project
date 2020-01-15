@@ -105,10 +105,10 @@ app.layout = html.Div([
                                     html.Div([
                                         html.H5('Emissions per capita (kt of CO2)'),
                                         dcc.Graph(id='bar_plot'),
-                                    ], className='columnMap1'),
+                                    ], className='columnBar'),
                                     html.Div([
                                     ], className='columnmi')
-                                ], className='row pretty'),
+                                ], className='row'),
                             ]),
                     ])
                 ]),
