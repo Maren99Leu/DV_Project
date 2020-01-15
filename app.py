@@ -12,11 +12,6 @@ df = pd.read_csv('data.csv', sep = ';')
 
 gas_names = ['CO2_emissions', 'CH4_emissions','N2O_emissions', 'GHG_emissions']
 
-places= ['energy_emissions', 'industry_emissions',
-       'agriculture_emissions', 'waste_emissions',
-       'land_use_foresty_emissions', 'bunker_fuels_emissions',
-       'electricity_heat_emissions', 'construction_emissions',
-       'transports_emissions', 'other_fuels_emissions']
 
 ######################################################Interactive Components############################################
 
@@ -283,36 +278,6 @@ def plots(year, countries, gas, projection):
     map2 = go.Figure(data=data_choropleth2, layout=layout_choropleth2)
 
     #### Bar plot ####
-    """
-    if scale == 'linear':
-        df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
-    else:
-        df_ = np.log(df[(df['Country Name'] == country) & (df['year'] == year)])
-    
-    df_ = df[(df['Country Name'] == country) & (df['year'] == year)]
-
-    fig2 = go.Figure()
-
-    fig2.add_trace(go.Bar(
-        x=[df_.iloc[0]['year']],
-        y=[df_.iloc[0]['CH4_emissions']],
-        name='CH4 Emissions'))
-
-    fig2.add_trace(go.Bar(
-        x=[df_.iloc[0]['year']],
-        y=[df_.iloc[0]['N2O_emissions']],
-        name='N20 Emissions'))
-
-    fig2.add_trace(go.Bar(
-        x=[df_.iloc[0]['year']],
-        y=[df_.iloc[0]['CO2_emissions']],
-        name='CO2 Emissions'))
-
-    fig2.add_trace(go.Bar(
-        x=[df_.iloc[0]['year']],
-        y=[df_.iloc[0]['GHG_emissions']],
-        name='GHG Emissions'))
-    """
 
     fig2 = go.Figure()
 
