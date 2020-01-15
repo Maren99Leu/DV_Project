@@ -315,6 +315,7 @@ def plots(year, countries, gas, scale, projection):
            map2,\
            fig2
 
+server = app.server
 
 if __name__ == '__main__':
     app.run_server(debug=True)
