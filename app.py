@@ -85,9 +85,10 @@ app.layout = html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
                                 html.Div([
-                                     html.Div([
-                                        html.H6('Filter by: Year and Gas')
-                                        ], className='row'),
+                                    html.Div([html.H6('Filter by: Year, gas and projection')], className='column'),
+                                    html.Div([html.H6('Filter by: Year and projection')], className='column')
+                                ], className='row'),
+                                html.Div([
                                     html.Div([
                                         html.H5('World emissions per capita (kt of CO2)'),
                                         dcc.Graph(id='choropleth')
@@ -100,7 +101,7 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
                                 html.Div([
-                                    html.H6('Filter by: Countries')
+                                    html.H6('Filter by: Year, countries and scale')
                                     ], className='row'),
                                 html.Div([
                                     html.Div([
@@ -115,9 +116,9 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Bar Plot Emissions', children=[
                                 html.Div([
-                                    html.Div([
-                                        html.H6('Filter by: Year and Countries')
-                                        ], className='row'),
+                                    html.H6('Filter by: Year, countries and scale')
+                                    ], className='row'),
+                                html.Div([
                                     html.Div([
                                     ], className='columnmi'),
                                     html.Div([
@@ -313,7 +314,7 @@ def plots(year, countries, gas, scale, projection):
 
     # Here we modify the tickangle of the xaxis, resulting in rotated labels.
     fig2.update_layout(
-        title_text='Emissions per capita (kt of CO2) for ' + str(year),
+        #title_text='Emissions per capita (kt of CO2) for ' + str(year),
         yaxis=dict(title='Emissions', type=['linear', 'log'][scale]))
     fig2.update_layout(barmode='group', xaxis_tickangle=-45)
     #fig.show()
