@@ -85,7 +85,7 @@ app.layout = html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
                                 html.Div([
-                                    html.Div([html.H6('Filter by: year, gas and projection')], className='column'),
+                                    html.Div([html.H6('Filter by: year, projection and gas')], className='column'),
                                     html.Div([html.H6('Filter by: year and projection')], className='column')
                                 ], className='row'),
                                 html.Div([
