@@ -68,7 +68,7 @@ app.layout = html.Div([
             )
         ], className='column'),
         html.Div([
-            html.Label('Choose a gas choice:'),
+            html.Label('Choose a gas:'),
             dcc.Dropdown(
                 id='gas_option',
                 options=gas_options,
@@ -113,7 +113,7 @@ app.layout = html.Div([
                                     ], className='columnMap1'),
                                     html.Div([
                                     ], className='columnmi')
-                                ], className='row'),
+                                ], className='row pretty'),
                             ]),
                     ])
                 ]),
@@ -329,6 +329,7 @@ def plots(year, countries, gas, projection):
         ))
 
     # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig2.update_layout(title_text='Emissions per capita (kt of CO2) for ' + str(year))
     fig2.update_layout(barmode='group', xaxis_tickangle=-45)
     #fig.show()
 
