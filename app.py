@@ -45,7 +45,7 @@ app.layout = html.Div([
     ]),
     html.Div([
         html.Div([
-            html.Label('Choose a country:'),
+            html.Label('Choose one or more countries:'),
             dcc.Dropdown(
                 id='country_drop',
                 options=country_options,
