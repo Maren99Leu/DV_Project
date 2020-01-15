@@ -63,6 +63,15 @@ app.layout = html.Div([
             )
         ], className='column'),
         html.Div([
+            html.Label('Choose a scale: '),
+            dcc.RadioItems(
+                id='lin_log',
+                options=[dict(label='linear', value=0), dict(label='log', value=1)],
+                value=0,
+                labelStyle={'display': 'inline-block'}
+            )
+        ], className='column'),
+        html.Div([
             html.Label('Choose a gas:'),
             dcc.Dropdown(
                 id='gas_option',
@@ -130,12 +139,12 @@ app.layout = html.Div([
         Input("year_slider", "value"),
         Input("country_drop", "value"),
         Input("gas_option", "value"),
-        #Input("lin_log", "value"),
+        Input("lin_log", "value"),
         Input("projection", "value"),
     ]
 )
 
-def plots(year, countries, gas, projection):
+def plots(year, countries, gas, scale, projection):
 ############################# Time Series Plot ##########################################################
     time_scatter = []
     for country in countries:
@@ -171,7 +180,7 @@ def plots(year, countries, gas, projection):
                           ),
                           type="date"
                       ),
-                      #yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                      yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                       paper_bgcolor='#f9f9f9'
                       )
 
@@ -209,7 +218,7 @@ def plots(year, countries, gas, projection):
                            ),
                            type="date"
                        ),
-                       #yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
+                       yaxis=dict(title='Emissions', type=['linear', 'log'][scale]),
                        paper_bgcolor='#f9f9f9'
                        )
     ############################################# World Map #####################################################
@@ -294,7 +303,9 @@ def plots(year, countries, gas, projection):
         ))
 
     # Here we modify the tickangle of the xaxis, resulting in rotated labels.
-    fig2.update_layout(title_text='Emissions per capita (kt of CO2) for ' + str(year))
+    fig2.update_layout(
+        title_text='Emissions per capita (kt of CO2) for ' + str(year),
+        yaxis=dict(title='Emissions', type=['linear', 'log'][scale]))
     fig2.update_layout(barmode='group', xaxis_tickangle=-45)
     #fig.show()
 
