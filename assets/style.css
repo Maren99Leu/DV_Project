@@ -82,6 +82,10 @@ img {
 .columnMap2 {
     flex:20%;
 }
+.columnBar {
+    flex:20%;
+}
+
 .mini {
   flex: 15%;
   margin: 5%;
