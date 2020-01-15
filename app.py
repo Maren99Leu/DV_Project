@@ -66,7 +66,7 @@ app.layout = html.Div([
             html.Label('Choose a scale: '),
             dcc.RadioItems(
                 id='lin_log',
-                options=[dict(label='linear', value=0), dict(label='log', value=1)],
+                options=[dict(label='Linear', value=0), dict(label='Log', value=1)],
                 value=0,
                 labelStyle={'display': 'inline-block'}
             )
@@ -85,8 +85,8 @@ app.layout = html.Div([
             html.Div([dcc.Tabs([
                             dcc.Tab(label='World Map', children=[
                                 html.Div([
-                                    html.Div([html.H6('Filter by: Year, gas and projection')], className='column'),
-                                    html.Div([html.H6('Filter by: Year and projection')], className='column')
+                                    html.Div([html.H6('Filter by: year, gas and projection')], className='column'),
+                                    html.Div([html.H6('Filter by: year and projection')], className='column')
                                 ], className='row'),
                                 html.Div([
                                     html.Div([
@@ -101,7 +101,7 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Time Series Data', children=[
                                 html.Div([
-                                    html.H6('Filter by: Year, countries and scale')
+                                    html.H6('Filter by: year, countries and scale')
                                     ], className='row'),
                                 html.Div([
                                     html.Div([
@@ -116,7 +116,7 @@ app.layout = html.Div([
                             ]),
                             dcc.Tab(label='Bar Plot Emissions', children=[
                                 html.Div([
-                                    html.H6('Filter by: Year, countries and scale')
+                                    html.H6('Filter by: year, countries and scale')
                                     ], className='row'),
                                 html.Div([
                                     html.Div([
